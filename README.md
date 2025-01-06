@@ -1,2 +1,2 @@
 # Library-Management-System
-System design for LMS and implented in java springBoot
+System design for LMS and implemented in java spring-boot
