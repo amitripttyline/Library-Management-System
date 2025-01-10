@@ -1,6 +1,4 @@
 package lms.demo.controller;
-
-
 import lms.demo.model.UserRequest;
 import lms.demo.model.UserResponse;
 import lms.demo.service.UserService;
@@ -43,15 +41,21 @@ public class UserController {
     }
 
     @GetMapping("/retrieve")
-    public ResponseEntity<UserResponse> getUser(Long id){
-        try{
-            UserResponse response = userService.getUserById(id);
-            if(response == null){
-                return ResponseEntity.notFound().build();
+    public ResponseEntity<Map<String, Object>> getUser(Long id) {
+        try {
+            Map<String, Object> response = userService.getUserById(id);
+
+            if (response.get("error") != null) {
+                return ResponseEntity.status(404).body(response);
             }
+
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(null);
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("user", null);
+            errorResponse.put("status", null);
+            errorResponse.put("error", "Error occurred: " + e.getMessage());
+            return ResponseEntity.internalServerError().body(errorResponse);
         }
     }
 
@@ -62,15 +66,20 @@ public class UserController {
 
 
     @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteUser(Long id){
+    public ResponseEntity<Map<String, Object>> deleteUser(Long id) {
         try {
-            String result = userService.deleteUser(id);
-            if(result.contains("not found")){
-                return ResponseEntity.status(404).body(result);
+            Map<String, Object> response = userService.deleteUser(id);
+
+            if (response.get("error") != null) {
+                return ResponseEntity.status(404).body(response);
             }
-            return ResponseEntity.ok(result);
-        } catch (Exception e){
-            return ResponseEntity.internalServerError().body("Error occurred: " + e.getMessage());
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("user", null);
+            errorResponse.put("status", null);
+            errorResponse.put("error", "Error occurred: " + e.getMessage());
+            return ResponseEntity.internalServerError().body(errorResponse);
         }
     }
 

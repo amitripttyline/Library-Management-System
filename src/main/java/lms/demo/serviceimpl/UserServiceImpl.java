@@ -1,15 +1,18 @@
 package lms.demo.serviceimpl;
 
 import lms.demo.dao.UserDao;
-import lms.demo.entity.User;
 import lms.demo.model.UserRequest;
 import lms.demo.model.UserResponse;
 import lms.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,24 +23,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse registerUser(UserRequest userRequest){
-        User user = new User();
-        user.setName(userRequest.getName());
-        user.setEmail(userRequest.getEmail());
-        user.setPassword(userRequest.getPassword());
-        user.setPhone(userRequest.getPhone());
-        user.setStatus("User registered successfully");
-        user.setCreatedAt(new Date());
-        user.setUpdatedAt(new Date());
-        user.setIs_active(1);
-        User savedUser = userDao.save(user);
+        UserResponse userResponse = new UserResponse();
+        userResponse.setName(userRequest.getName());
+        userResponse.setEmail(userRequest.getEmail());
+        userResponse.setPassword(userRequest.getPassword());
+        userResponse.setPhone(userRequest.getPhone());
+        userResponse.setStatus("User registered successfully");
+        userResponse.setCreatedAt(new Date());
+        userResponse.setUpdatedAt(new Date());
+        userResponse.setIs_active(1);
+        UserResponse savedUser = userDao.save(userResponse);
         return convertToUserResponse(savedUser);
 
-    }
-
-    @Override
-    public UserResponse getUserById(Long id){
-        User user = userDao.findById(id);
-        return user != null ? convertToUserResponse(user) : null;
     }
 
     @Override
@@ -45,43 +42,83 @@ public class UserServiceImpl implements UserService {
         return userDao.findAll().stream().map(this::convertToUserResponse).collect(Collectors.toList());
     }
 
-    @Override
-    public String deleteUser(Long id){
-        if(!userDao.existsById(id)){
-            return "User not found.";
+
+
+    public Map<String, Object> getUserById(Long id) {
+        Map<String, Object> response = new HashMap<>();
+
+        UserResponse user = userDao.findById(id);
+
+        if (user == null) {
+            response.put("user", null);
+            response.put("status", null);
+            response.put("error", "User not found with id: " + id);
+            return response;
         }
-        userDao.deleteById(id);
-        return "User delete successfully.";
+
+        UserResponse userResponse = convertToUserResponse(user);
+        response.put("user", userResponse);
+        response.put("status", "User retrieved successfully");
+        response.put("error", null);
+
+        return response;
     }
+
+    @Override
+    public Map<String, Object> deleteUser(Long id) {
+        Map<String, Object> response = new HashMap<>();
+
+        UserResponse user = userDao.findById(id);
+
+        if (user == null) {
+            response.put("user", null);
+            response.put("status", null);
+            response.put("error", "User not found with id: " + id);
+            return response;
+        }
+
+        // Convert to UserResponse before deleting
+        UserResponse userResponse = convertToUserResponse(user);
+
+        // Delete the user
+        userDao.deleteById(id);
+
+        response.put("user", userResponse);
+        response.put("status", "User deleted successfully");
+        response.put("error", null);
+
+        return response;
+    }
+
 
     @Override
     public UserResponse updateUser(UserRequest userRequest, Long id){
 
-        User user = userDao.findById(id);
-        if (user == null){
+        UserResponse userResponse = userDao.findById(id);
+        if (userResponse == null){
             return null;
         }
         if (userRequest.getName() != null) {
-            user.setName(userRequest.getName());
+            userResponse.setName(userRequest.getName());
         }
         if (userRequest.getEmail() != null) {
-            user.setEmail(userRequest.getEmail());
+            userResponse.setEmail(userRequest.getEmail());
         }
         if (userRequest.getPassword() != null) {
-            user.setPassword(userRequest.getPassword());
+            userResponse.setPassword(userRequest.getPassword());
         }
         if (userRequest.getPhone() != 0) {
-            user.setPhone(userRequest.getPhone());
+            userResponse.setPhone(userRequest.getPhone());
         }
 
-        user.setStatus("User updated successfully");
-        user.setUpdatedAt(new Date());
+        userResponse.setStatus("User updated successfully");
+        userResponse.setUpdatedAt(new Date());
 
-        User updatedUser = userDao.update(user);
+        UserResponse updatedUser = userDao.update(userResponse);
         return convertToUserResponse(updatedUser);
     }
 
-    private UserResponse convertToUserResponse(User user){
+    private UserResponse convertToUserResponse(UserResponse user){
         UserResponse response = new UserResponse();
         response.setId(user.getId());
         response.setName(user.getName());
@@ -89,8 +126,8 @@ public class UserServiceImpl implements UserService {
         response.setPassword(user.getPassword());
         response.setPhone(user.getPhone());
         response.setStatus(user.getStatus());
-        response.setCreated_at(user.getCreatedAt());
-        response.setUpdated_at(user.getUpdatedAt());
+        response.setCreatedAt(user.getCreatedAt());
+        response.setUpdatedAt(user.getUpdatedAt());
         response.setIs_active(1);
         return response;
     }

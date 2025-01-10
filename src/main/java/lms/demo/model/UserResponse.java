@@ -1,27 +1,53 @@
 package lms.demo.model;
-
+import jakarta.persistence.*;
 import java.util.Date;
+import jakarta.validation.constraints.*;
 
+
+@Entity
+@Table(name = "users")
 public class UserResponse {
-    private String email;
-    private String name;
-    private long phone;
-    private String password;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String status;
-    private Date created_at;
-    private Date updated_at;
 
+    @NotBlank(message = "Name is required")
+    @Size(min = 2, max = 50)
+    @Column(nullable = false)
+    private String name;
+
+    @NotBlank(message = "Email is required")
+    @Email
+    @Column(nullable = false, unique = true)
+    private String email;
+    @NotBlank(message = "Password is required")
+    @Column(nullable = false)
+    private String password;
+
+    @Min(1000000000)
+    @Max(9999999999L)
+    @Column(nullable = false)
+    private long phone;
+    @Size(max = 100)
+    private String status;
+    @Min(0)
+    @Max(1)
     private int is_active;
 
+    @Column(name = "created_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
 
+    @Column(name = "updated_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedAt;
 
-    public String getEmail() {
-        return email;
+    public Long getId() {
+        return id;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -32,12 +58,12 @@ public class UserResponse {
         this.name = name;
     }
 
-    public long getPhone() {
-        return phone;
+    public String getEmail() {
+        return email;
     }
 
-    public void setPhone(long phone) {
-        this.phone = phone;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -48,12 +74,12 @@ public class UserResponse {
         this.password = password;
     }
 
-    public Long getId() {
-        return id;
+    public long getPhone() {
+        return phone;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setPhone(long phone) {
+        this.phone = phone;
     }
 
     public String getStatus() {
@@ -64,20 +90,20 @@ public class UserResponse {
         this.status = status;
     }
 
-    public Date getCreated_at() {
-        return created_at;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(Date created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public Date getUpdated_at() {
-        return updated_at;
+    public Date getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUpdated_at(Date updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public int getIs_active() {
@@ -88,33 +114,19 @@ public class UserResponse {
         this.is_active = is_active;
     }
 
-    public UserResponse(String email, String name, long phone, String password, Long id, String status, Date created_at, Date updated_at, int is_active) {
-        this.email = email;
-        this.name = name;
-        this.phone = phone;
-        this.password = password;
+    public UserResponse(long id, String name, String email, String password, long phone, String status, int is_active, Date createdAt, Date updatedAt) {
         this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
         this.status = status;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
         this.is_active = is_active;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
-    public UserResponse() {
+    public UserResponse(){
     }
 
-    @Override
-    public String toString() {
-        return "UserResponse{" +
-                "email='" + email + '\'' +
-                ", name='" + name + '\'' +
-                ", phone=" + phone +
-                ", password='" + password + '\'' +
-                ", id=" + id +
-                ", status='" + status + '\'' +
-                ", created_at=" + created_at +
-                ", updated_at=" + updated_at +
-                ", is_active=" + is_active +
-                '}';
-    }
 }

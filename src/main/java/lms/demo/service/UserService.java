@@ -1,6 +1,5 @@
 package lms.demo.service;
 
-import lms.demo.entity.User;
 import lms.demo.model.UserRequest;
 import lms.demo.model.UserResponse;
 import org.springframework.http.ResponseEntity;
@@ -13,13 +12,9 @@ import java.util.Map;
 
 @Component
 public interface UserService {
-
-
-   UserResponse getUserById(Long id);
-   List<UserResponse> getAllUsers();
-   String deleteUser(Long id);
+    public Map<String, Object> getUserById(Long id);
+    List<UserResponse> getAllUsers();
+    public Map<String, Object> deleteUser(Long id);
    UserResponse updateUser(UserRequest userRequest, Long id);
-
-
     UserResponse registerUser(UserRequest userRequest);
 }

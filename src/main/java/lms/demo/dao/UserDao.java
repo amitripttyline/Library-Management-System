@@ -1,16 +1,18 @@
 package lms.demo.dao;
 
-import lms.demo.entity.User;
+import lms.demo.model.UserResponse;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 public interface UserDao {
 
-    User save(User user);
-    User findById(Long Id);
-    List<User> findAll();
+    UserResponse save(UserResponse userResponse);
+    UserResponse findById(Long Id);
+    List<UserResponse> findAll();
     void deleteById(Long id);
-    User update(User user);
+//    public ResponseEntity<Object> deleteById(Long id);
+    UserResponse update(UserResponse userResponse);
     boolean existsById(Long id);
 
 }
