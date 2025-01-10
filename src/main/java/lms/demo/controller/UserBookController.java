@@ -13,8 +13,7 @@ import java.util.HashMap;
 @RequestMapping("/api/v1/library")
 
 public class UserBookController {
-    HashMap<Long, UserResponse> usermap = UserController.userList;
-    HashMap<Long, BookResponse> bookmap = BookController.bookList;
+
 
 
 

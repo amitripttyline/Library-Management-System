@@ -69,7 +69,7 @@ public class BookController {
     }
 
     @GetMapping("/retrieve")
-    public ResponseEntity<BookResponse> fetchbookResponse(long id) {
+    public ResponseEntity<BookResponse> fetchBookResponse(Long id) {
         try {
             BookResponse value = null;
             for(Map.Entry<Long, BookResponse> element : bookList.entrySet()) {
@@ -99,7 +99,7 @@ public class BookController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<BookResponse> fetchBookResponse(@RequestBody BookRequest bookRequest, long id) {
+    public ResponseEntity<BookResponse> updateBookResponse(@RequestBody BookRequest bookRequest, long id) {
         try {
             if (!bookList.containsKey(id)) {
                 throw new RuntimeException("Book not found with id: " + id);
@@ -136,6 +136,5 @@ public class BookController {
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(null);
         }
-
     }
 }

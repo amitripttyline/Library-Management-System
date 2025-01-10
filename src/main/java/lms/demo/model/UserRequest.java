@@ -3,9 +3,8 @@ package lms.demo.model;
 public class UserRequest {
     private String email;
     private String name;
-    private long phone;
+    private Long phone;
     private String password;
-
     public String getEmail() {
         return email;
     }
