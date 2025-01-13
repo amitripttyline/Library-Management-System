@@ -42,7 +42,7 @@ public class UserResponse {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
@@ -78,7 +78,7 @@ public class UserResponse {
         return phone;
     }
 
-    public void setPhone(long phone) {
+    public void setPhone(Long phone) {
         this.phone = phone;
     }
 
@@ -114,7 +114,7 @@ public class UserResponse {
         this.is_active = is_active;
     }
 
-    public UserResponse(long id, String name, String email, String password, long phone, String status, int is_active, Date createdAt, Date updatedAt) {
+    public UserResponse(Long id, String name, String email, String password, Long phone, String status, int is_active, Date createdAt, Date updatedAt) {
         this.id = id;
         this.name = name;
         this.email = email;

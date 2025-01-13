@@ -1,20 +1,62 @@
 package lms.demo.model;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.util.Date;
 
+@Entity
+@Table(name = "books")
 public class BookResponse {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String status;
-    private String description;
-    private String added_by;
-    private String title;
 
+    @NotNull(message = "ISBN cannot be null")
+    @Column(nullable = false, unique = true)
+    private Long isbn;
+    private String status;
+    @NotBlank(message = "Author name is required")
+    @Column(nullable = false)
+    private String author;
+
+    @NotBlank(message = "Title is required")
+    @Column(nullable = false)
+    private String title;
+    private String description;
+    @NotBlank(message = "Added-by is required")
+    @Column(nullable = false)
+    private String added_by;
     private String language;
     private int is_available;
     private Date created_at;
     private Date updated_at;
 
-    private String author;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(Long isbn) {
+        this.isbn = isbn;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getAuthor() {
         return author;
@@ -30,24 +72,6 @@ public class BookResponse {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    private String is_deleted;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public String getDescription() {
@@ -98,47 +122,37 @@ public class BookResponse {
         this.updated_at = updated_at;
     }
 
-    public String getIs_deleted() {
-        return is_deleted;
+    public BookResponse(Long id, Long isbn, String status, String author, String title, String description, String added_by, String language, int is_available, Date created_at, Date updated_at) {
+        this.id = id;
+        this.isbn = isbn;
+        this.status = status;
+        this.author = author;
+        this.title = title;
+        this.description = description;
+        this.added_by = added_by;
+        this.language = language;
+        this.is_available = is_available;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
     }
 
-    public void setIs_deleted(String is_deleted) {
-        this.is_deleted = is_deleted;
+    public BookResponse() {
     }
 
     @Override
     public String toString() {
         return "BookResponse{" +
                 "id=" + id +
+                ", isbn=" + isbn +
                 ", status='" + status + '\'' +
+                ", author='" + author + '\'' +
+                ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", added_by='" + added_by + '\'' +
-                ", title='" + title + '\'' +
                 ", language='" + language + '\'' +
                 ", is_available=" + is_available +
                 ", created_at=" + created_at +
                 ", updated_at=" + updated_at +
-                ", author='" + author + '\'' +
-                ", is_deleted='" + is_deleted + '\'' +
                 '}';
     }
-
-    public BookResponse(Long id, String status, String description, String added_by, String title, String language, int is_available, Date created_at, Date updated_at, String author, String is_deleted) {
-        this.id = id;
-        this.status = status;
-        this.description = description;
-        this.added_by = added_by;
-        this.title = title;
-        this.language = language;
-        this.is_available = is_available;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
-        this.author = author;
-        this.is_deleted = is_deleted;
-    }
-
-    public BookResponse() {
-    }
-
-
 }

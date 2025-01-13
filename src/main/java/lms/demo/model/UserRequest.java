@@ -42,7 +42,7 @@ public class UserRequest {
         return phone;
     }
 
-    public void setPhone(long phone) {
+    public void setPhone(Long phone) {
         this.phone = phone;
     }
 
@@ -54,7 +54,7 @@ public class UserRequest {
         this.password = password;
     }
 
-    public UserRequest(String email, String name, long phone, String password) {
+    public UserRequest(String email, String name, Long phone, String password) {
         this.email = email;
         this.name = name;
         this.phone = phone;

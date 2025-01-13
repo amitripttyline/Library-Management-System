@@ -64,7 +64,6 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-
     @DeleteMapping("/delete")
     public ResponseEntity<Map<String, Object>> deleteUser(Long id) {
         try {
@@ -96,7 +95,4 @@ public class UserController {
         }
 
     }
-
-
-
 }
