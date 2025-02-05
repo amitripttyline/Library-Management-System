@@ -1,7 +1,6 @@
 package lms.demo.dao;
 
 import lms.demo.model.BookResponse;
-import lms.demo.model.UserResponse;
 
 import java.util.List;
 

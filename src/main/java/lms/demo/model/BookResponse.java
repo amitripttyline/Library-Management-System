@@ -14,7 +14,7 @@ public class BookResponse {
     private Long id;
 
     @NotNull(message = "ISBN cannot be null")
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true  )
     private Long isbn;
     private String status;
     @NotBlank(message = "Author name is required")
