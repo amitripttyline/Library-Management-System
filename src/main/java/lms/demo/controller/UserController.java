@@ -40,6 +40,20 @@ public class UserController {
         }
     }
 
+
+//    @GetMapping("/retrieve")
+//    public ResponseEntity<Map<String, Object>> getBook(@RequestHeader("Authorization") String token,long id) {
+//        try {
+//
+//            if (!AuthController.isValidToken(token)) {
+//                Map<String, Object> response = new HashMap<>();
+//                response.put("status", 401);
+//                response.put("error", "Unauthorized");
+//                response.put("message", "Invalid token");
+//                return ResponseEntity.status(401).body(response);
+//    }...
+
+
     @GetMapping("/retrieve")
     public ResponseEntity<Map<String, Object>> getUser(Long id) {
         try {

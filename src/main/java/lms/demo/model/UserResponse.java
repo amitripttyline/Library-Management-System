@@ -11,6 +11,9 @@ public class UserResponse {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String token;
+
+
     @NotBlank(message = "Name is required")
     @Size(min = 2, max = 50)
     @Column(nullable = false)
@@ -41,6 +44,9 @@ public class UserResponse {
     @Column(name = "updated_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
+
+    public UserResponse(String name, String user, String token) {
+    }
 
     public long getId() {
         return id;
@@ -114,16 +120,32 @@ public class UserResponse {
         this.is_active = is_active;
     }
 
-    public UserResponse(Long id, String name, String email, String password, Long phone, String status, int is_active, Date createdAt, Date updatedAt) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
+    public void setPhone(long phone) {
         this.phone = phone;
-        this.status = status;
-        this.is_active = is_active;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    @Override
+    public String toString() {
+        return "UserResponse{" +
+                "id=" + id +
+                ", token='" + token + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", phone=" + phone +
+                ", status='" + status + '\'' +
+                ", is_active=" + is_active +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 
     public UserResponse(){

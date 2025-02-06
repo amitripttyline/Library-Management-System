@@ -66,9 +66,19 @@ public class BookController {
     }
 
     @GetMapping("/retrieve_all")
-    public List<BookResponse> getAllBooks() {
-        return bookService.getAllBooks();
+    public ResponseEntity<?> getAllBooks(@RequestHeader("Authorization") String token) {
+        System.out.println("===================check valid:" + AuthController.isValidToken(token)+ "================");
+        if (AuthController.isValidToken(token)) {
+
+            return ResponseEntity.ok(bookService.getAllBooks());
+        }
+        return ResponseEntity.status(401).body("Unauthorized: Invalid Token");
     }
+
+//    @GetMapping("/retrieve_all")
+//    public List<BookResponse> getAllBooks() {
+//        return bookService.getAllBooks();
+//    }
 
     @DeleteMapping("/delete")
     public ResponseEntity<Map<String, Object>> deleteBook(long id) {
