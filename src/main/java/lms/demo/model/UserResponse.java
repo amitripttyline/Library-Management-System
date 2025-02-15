@@ -1,12 +1,16 @@
 package lms.demo.model;
 import jakarta.persistence.*;
+
+import java.util.Collection;
 import java.util.Date;
 import jakarta.validation.constraints.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 
 @Entity
 @Table(name = "users")
-public class UserResponse {
+public class UserResponse implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -45,7 +49,36 @@ public class UserResponse {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
-    public UserResponse(String name, String user, String token) {
+//    public UserResponse(String name, String user, String token) {
+//    }
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public long getId() {

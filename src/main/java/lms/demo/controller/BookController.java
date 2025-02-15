@@ -67,12 +67,13 @@ public class BookController {
 
     @GetMapping("/retrieve_all")
     public ResponseEntity<?> getAllBooks(@RequestHeader("Authorization") String token) {
-        System.out.println("===================check valid:" + AuthController.isValidToken(token)+ "================");
-        if (AuthController.isValidToken(token)) {
-
-            return ResponseEntity.ok(bookService.getAllBooks());
-        }
-        return ResponseEntity.status(401).body("Unauthorized: Invalid Token");
+//        System.out.println("===================check valid:" + AuthController.isValidToken(token)+ "================");
+//        if (AuthController.isValidToken(token)) {
+//
+//            return ResponseEntity.ok(bookService.getAllBooks());
+//        }
+//        return ResponseEntity.status(401).body("Unauthorized: Invalid Token");
+        return ResponseEntity.ok(bookService.getAllBooks());
     }
 
 //    @GetMapping("/retrieve_all")

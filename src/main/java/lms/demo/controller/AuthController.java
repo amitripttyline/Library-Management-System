@@ -1,52 +1,35 @@
 package lms.demo.controller;
 
-import lms.demo.model.AuthRequest;
-import org.springframework.http.ResponseEntity;
+import lms.demo.dao.UserDao;
+import lms.demo.model.UserRequest;
+import lms.demo.model.UserResponse;
+import lms.demo.model.jwtModel.JwtUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
+  @Autowired
+  private UserDao userDao;
 
-  // Store tokens (can be replaced with a database)
-  private static final Map<String, String> tokenStore = new HashMap<>();
+  @Autowired
+  private PasswordEncoder passwordEncoder;
+  @Autowired
+  private JwtUtil jwtUtil;
 
-  @GetMapping("/health")
-  public ResponseEntity<String> checkHealth(){
-    try {
-      return ResponseEntity.ok("Connection successfully!");
-    } catch (Exception e){
-      return ResponseEntity.internalServerError().body("Health Check failed " + e.getMessage());
-    }
-  }
 
   @PostMapping("/login")
-  public ResponseEntity<Map<String, String>> login(@RequestBody AuthRequest request) {
-    System.out.println("----------------------------------amit auth check------------------------");
-    // Hardcoded authentication (Replace with database check)
-    System.out.println("username:"+ request.getUsername() + " password:" +  request.getPassword());
-    if ("user".equals(request.getUsername()) && "password".equals(request.getPassword())) {
-      String token = UUID.randomUUID().toString(); // Generate token
-      tokenStore.put(token, request.getUsername()); // Store token
-      System.out.println("========post req===========token:" + token + "================" + tokenStore);
-      return ResponseEntity.ok(Map.of("token", token));
+  public String login(@RequestBody UserRequest userRequest) {
+
+    UserResponse dbUser = userDao.findByEmail(userRequest.getEmail());
+    if (dbUser != null && userRequest.getPassword().equals(dbUser.getPassword())) {
+      return jwtUtil.generateToken(userRequest.getEmail());  // Return the JWT token
+    } else {
+      throw new RuntimeException("Invalid credentials");
     }
-    return ResponseEntity.status(401).body(Map.of("error", "Invalid credentials"));
-  }
-
-  @PostMapping("/logout")
-  public ResponseEntity<Map<String, String>> logout(@RequestHeader("Authorization") String token) {
-    tokenStore.remove(token);
-    return ResponseEntity.ok(Map.of("message", "Logged out successfully"));
-  }
-
-    public static boolean isValidToken(String token) {
-      System.out.println("======valid check req=============token:" + token + "================" + tokenStore);
-
-
-      return tokenStore.containsKey(token);
   }
 }
